@@ -36,45 +36,21 @@
 
 "use strict";
 
-let { subprocess } = require("./ipccode/subprocess");
+self.on("message", function ({ className, value: [head, pgpBlock, tail] }) {
+  let items = document.getElementsByClassName(className);
+  if (!items.length)
+    console.log("Item not found", className);
 
-let encryptCommand = "gpg --encrypt --armor -r jonathan.protzenko@free.fr";
+  let item = items[0];
+  if (head && head.length);
+    item.textContent = head+"\n";
+  item.textContent += pgpBlock;
+  if (tail && tail.length);
+    item.textContent += "\n"+tail;
+  item.style.display = "block";
+  item.style.whiteSpace = "pre";
+  console.log("Decrypted text inserted");
 
-function encrypt(aData, k) {
-  let output = [];
-  let p = subprocess.call({
-    command:     '/usr/bin/gpg',
-    arguments:   [
-      '--encrypt',
-      '--armor',
-      '-r', 'jonathan.protzenko@free.fr',
-    ],
-    environment: [ ],
-    charset: 'UTF-8',
-    workdir: '/tmp',
-    stdin: function(stdin) {
-      stdin.write(aData);
-      stdin.close();
-    },
-    stdout: function(data) {
-      output.push(data);
-      console.log("Received output from GPG", data);
-    },
-    stderr: function(data) {
-      console.log("Error from GPG", data);
-    },
-    done: function(result) {
-      console.log("GPG terminated with", result.exitCode);
-      k(output.join(""));
-    },
-    mergeStderr: false
-  });
- 
-}
-
-function decrypt(aData, k) {
-  k("DECRYPTED");
-}
-
-exports.encrypt = encrypt;
-exports.decrypt = decrypt;
+  // Tell the add-on script to kill us, we're not needed anymore
+  self.postMessage("seppuku");
+}); 
