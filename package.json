@@ -3,7 +3,15 @@
     "license": "MPL 2.0",
     "author": "Jonathan Protzenko",
     "version": "0.1",
-    "fullName": "GPG-Fox",
+    "fullName": "GPGFox",
     "id": "jid1-xR4MyK6K6znEAg",
-    "description": "Very lightweight support for calling GPG from Firefox"
+    "description": "Very lightweight support for calling GPG from Firefox",
+    "preferences": [{
+      "name": "gpgPath",
+      "title": "Path to the GPG binary",
+      "description": "On Unix systems, usually /usr/bin/gpg (default)",
+      "type": "string",
+      "value": "/usr/bin/gpg"
+    }
+    ]
 }
