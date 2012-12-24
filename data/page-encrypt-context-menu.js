@@ -14,3 +14,17 @@ self.on("click", function (node, data) {
     text: node.value,
   });
 });
+
+self.on("context", function (node) {
+  let tagName = node.tagName && node.tagName.toLowerCase();
+  console.log("context", tagName, node.contentDocument,
+    node.contentDocument && node.contentDocument.designMode);
+  let r =
+    (tagName == "textarea") ||
+    (tagName == "iframe"
+      && node.contentDocument
+      && node.contentDocument.designMode == "on") ||
+    (tagName == "iframe" && node.contentEditable)
+  ;
+  return r;
+});
