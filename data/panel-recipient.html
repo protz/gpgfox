@@ -1,0 +1,33 @@
+<!-- This Source Code Form is subject to the terms of the Mozilla Public
+   - License, v. 2.0. If a copy of the MPL was not distributed with this
+   - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
+<!doctype html>
+<html>
+  <head>
+    <style>
+      body {
+        margin: 5px;
+        padding: 0;
+        font-family: sans-serif;
+      }
+
+      .input-field > * {
+        display: inline-block;
+      }
+
+      h4 {
+        margin: 0 0 3px 0;
+        padding: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <h4>Pick a recipient for encryption</h4>
+    <div class="input-field">
+      <input type="text" placeholder="recipient email address" id="recipient">
+      <input type="button" value="ok" id="ok">
+    </div>
+    <div class="search-results">
+    </div>
+  </body>
+</html>
