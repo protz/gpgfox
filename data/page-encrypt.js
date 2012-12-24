@@ -38,12 +38,13 @@
 
 self.on("message", function ({ className, value }) {
   let textareas = document.getElementsByClassName(className);
-  if (!textareas.length)
+  if (!textareas.length) {
     console.log("Item not found", className);
-
-  let textarea = textareas[0];
-  textarea.value = value;
-  console.log("Encrypted text inserted");
+  } else {
+    let textarea = textareas[0];
+    textarea.value = value;
+    console.log("Encrypted text inserted");
+  }
 
   // Tell the add-on script to kill us, we're not needed anymore
   self.postMessage("seppuku");

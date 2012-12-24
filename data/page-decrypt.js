@@ -38,18 +38,19 @@
 
 self.on("message", function ({ className, value: [head, pgpBlock, tail] }) {
   let items = document.getElementsByClassName(className);
-  if (!items.length)
+  if (!items.length) {
     console.log("Item not found", className);
-
-  let item = items[0];
-  if (head && head.length);
-    item.textContent = head+"\n";
-  item.textContent += pgpBlock;
-  if (tail && tail.length);
-    item.textContent += "\n"+tail;
-  item.style.display = "block";
-  item.style.whiteSpace = "pre";
-  console.log("Decrypted text inserted");
+  } else {
+    let item = items[0];
+    if (head && head.length);
+      item.textContent = head+"\n";
+    item.textContent += pgpBlock;
+    if (tail && tail.length);
+      item.textContent += "\n"+tail;
+    item.style.display = "block";
+    item.style.whiteSpace = "pre";
+    console.log("Decrypted text inserted");
+  }
 
   // Tell the add-on script to kill us, we're not needed anymore
   self.postMessage("seppuku");
