@@ -8,10 +8,9 @@
     "description": "Very lightweight support for calling GPG from Firefox",
     "preferences": [{
       "name": "gpgPath",
-      "title": "Path to the GPG binary",
-      "description": "On Unix systems, usually /usr/bin/gpg (default)",
       "type": "string",
-      "value": "/usr/bin/gpg"
+      "value": "/usr/bin/gpg",
+      "title": "Path to the GPG binary"
     }
     ]
 }
