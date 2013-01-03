@@ -2,7 +2,7 @@
     "name": "gpgfox",
     "license": "MPL 2.0",
     "author": "Jonathan Protzenko",
-    "version": "0.1",
+    "version": "0.2",
     "fullName": "GPGFox",
     "id": "jid1-xR4MyK6K6znEAg",
     "description": "Very lightweight support for calling GPG from Firefox",
