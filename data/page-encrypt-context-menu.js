@@ -24,11 +24,14 @@ function findEditable(aNode) {
 }
 
 function getText(aNode) {
+  console.log("getText", aNode.tagName);
   switch (aNode.tagName) {
     case "TEXTAREA":
       return aNode.value;
-    case "IFRAME":
-      return aNode.contentDocument.body.textContent;
+    case "HTML":
+      for (let child of aNode.childNodes)
+        if (child.tagName && child.tagName == "BODY")
+          return child.textContent;
     default:
       return aNode.textContent;
   }

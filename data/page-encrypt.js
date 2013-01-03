@@ -32,10 +32,14 @@ self.on("message", function ({ className, text }) {
   if (!items.length) {
     let iframes = document.getElementsByTagName("iframe");
     for (let iframe of iframes) {
-      let body = iframe.contentDocument.body;
-      if (body.parentNode.classList.contains(className)) {
-        items = [body];
-        break;
+      try {
+        let body = iframe.contentDocument.body;
+        if (body.parentNode.classList.contains(className)) {
+          items = [body];
+          break;
+        }
+      } catch (e) {
+        // Not the same origin...
       }
     }
   }
