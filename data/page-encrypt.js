@@ -4,7 +4,7 @@
 
 "use strict";
 
-function setText([aNode, aDocument], aValue) {
+function setText(aNode, aValue) {
   switch (aNode.tagName) {
     case "TEXTAREA":
       aNode.value = aValue;
@@ -13,7 +13,7 @@ function setText([aNode, aDocument], aValue) {
     case "BODY":
       while (aNode.firstChild)
         aNode.removeChild(aNode.firstChild);
-      let pre = aDocument.createElement("pre");
+      let pre = aNode.ownerDocument.createElement("pre");
       aNode.appendChild(pre);
       pre.textContent = aValue;
       break;
@@ -27,16 +27,14 @@ function setText([aNode, aDocument], aValue) {
 }
 
 self.on("message", function ({ className, text }) {
-  // {items} is a list of pairs, the left element of the pair is the node, and
-  // the right element of the pair is corresponding document
-  let items = [[x, null] for (x of document.getElementsByClassName(className))];
+  let items = document.getElementsByClassName(className);
 
   if (!items.length) {
     let iframes = document.getElementsByTagName("iframe");
     for (let iframe of iframes) {
       let body = iframe.contentDocument.body;
       if (body.parentNode.classList.contains(className)) {
-        items = [[body, iframe.contentDocument]];
+        items = [body];
         break;
       }
     }
