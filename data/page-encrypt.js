@@ -4,18 +4,17 @@
 
 "use strict";
 
-function setText(aNode, aValue) {
+function setText([aNode, aDocument], aValue) {
   switch (aNode.tagName) {
     case "TEXTAREA":
       aNode.value = aValue;
       break;
 
-    case "IFRAME":
-      let body = aNode.contentDocument.body;
-      while (body.firstChild)
-        body.removeChild(body.firstChild);
-      let pre = aNode.contentDocument.createElement("pre");
-      body.appendChild(pre);
+    case "BODY":
+      while (aNode.firstChild)
+        aNode.removeChild(aNode.firstChild);
+      let pre = aDocument.createElement("pre");
+      aNode.appendChild(pre);
       pre.textContent = aValue;
       break;
 
@@ -28,17 +27,21 @@ function setText(aNode, aValue) {
 }
 
 self.on("message", function ({ className, text }) {
-  let items = document.getElementsByClassName(className);
+  // {items} is a list of pairs, the left element of the pair is the node, and
+  // the right element of the pair is corresponding document
+  let items = [[x, null] for (x of document.getElementsByClassName(className))];
+
   if (!items.length) {
     let iframes = document.getElementsByTagName("iframe");
     for (let iframe of iframes) {
       let body = iframe.contentDocument.body;
       if (body.parentNode.classList.contains(className)) {
-        items = [body];
+        items = [[body, iframe.contentDocument]];
         break;
       }
     }
   }
+
   if (items.length != 1) {
     console.log("Not just one item found:", items.length);
     return;
