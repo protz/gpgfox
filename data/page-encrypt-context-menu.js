@@ -5,16 +5,20 @@
 "use strict";
 
 function findEditable(aNode) {
+  console.log("findEditable", aNode.tagName);
   if (aNode.tagName == "TEXTAREA")
     return aNode;
-  else if (aNode.tagName == "IFRAME" &&
-      node.contentDocument &&
-      node.contentDocument.designMode == "on")
+  // These two find the outermost node with the isContentEditable property
+  else if (aNode.isContentEditable && aNode.parentNode && aNode.parentNode.isContentEditable)
+    return findEditable(aNode.parentNode);
+  else if (aNode.isContentEditable)
     return aNode;
-  else if (aNode.contentEditable)
+  // This will return the HTML node
+  else if (aNode.parentNode && aNode.parentNode.designMode == "on")
     return aNode;
+  // This walks up the DOM
   else if (aNode.parentNode)
-    return findIframe(aNode.parentNode);
+    return findEditable(aNode.parentNode);
   else
     return null;
 }

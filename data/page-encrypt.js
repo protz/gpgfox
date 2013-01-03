@@ -4,15 +4,48 @@
 
 "use strict";
 
-self.on("message", function ({ className, text }) {
-  let textareas = document.getElementsByClassName(className);
-  if (!textareas.length) {
-    console.log("Item not found", className);
-  } else {
-    let textarea = textareas[0];
-    textarea.value = text;
-    console.log("Encrypted text inserted");
+function setText(aNode, aValue) {
+  switch (aNode.tagName) {
+    case "TEXTAREA":
+      aNode.value = aValue;
+      break;
+
+    case "IFRAME":
+      let body = aNode.contentDocument.body;
+      while (body.firstChild)
+        body.removeChild(body.firstChild);
+      let pre = aNode.contentDocument.createElement("pre");
+      body.appendChild(pre);
+      pre.textContent = aValue;
+      break;
+
+    default:
+      aNode.textContent = aValue;
+      aNode.style.display = "block";
+      aNode.style.whiteSpace = "pre";
+      break;
   }
+}
+
+self.on("message", function ({ className, text }) {
+  let items = document.getElementsByClassName(className);
+  if (!items.length) {
+    let iframes = document.getElementsByTagName("iframe");
+    for (let iframe of iframes) {
+      let body = iframe.contentDocument.body;
+      if (body.parentNode.classList.contains(className)) {
+        items = [body];
+        break;
+      }
+    }
+  }
+  if (items.length != 1) {
+    console.log("Not just one item found:", items.length);
+    return;
+  }
+
+  setText(items[0], text);
+  console.log("Encrypted text inserted");
 
   // Tell the add-on script to kill us, we're not needed anymore
   self.postMessage("seppuku");
